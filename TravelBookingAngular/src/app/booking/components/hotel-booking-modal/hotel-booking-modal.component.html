@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Book a Hotel</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="hotelForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="hotelName" class="form-label">Hotel Name</label>
+      <input type="text" id="hotelName" class="form-control" formControlName="hotelName">
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="checkIn" class="form-label">Check-In</label>
+        <input type="date" id="checkIn" class="form-control" formControlName="checkIn">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="checkOut" class="form-label">Check-Out</label>
+        <input type="date" id="checkOut" class="form-control" formControlName="checkOut">
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="roomType" class="form-label">Room Type</label>
+      <select id="roomType" class="form-select" formControlName="roomType">
+        <option value="Standard">Standard</option>
+        <option value="Deluxe">Deluxe</option>
+        <option value="Suite">Suite</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="totalCost" class="form-label">Total Cost ($)</label>
+      <input type="number" id="totalCost" class="form-control" formControlName="totalCost">
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('cancel click')">Cancel</button>
+  <button type="button" class="btn btn-primary" [disabled]="hotelForm.invalid" (click)="onSubmit()">Save
+    Booking</button>
+</div>

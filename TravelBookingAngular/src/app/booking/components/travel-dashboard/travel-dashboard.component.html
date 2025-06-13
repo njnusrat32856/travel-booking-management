@@ -1,0 +1,113 @@
+<div class="container-fluid mt-4">
+  <h1 class="mb-4">Travel Booking Dashboard</h1>
+
+  <!-- Row for Form and Itinerary -->
+  <div class="row">
+    <div class="col-lg-5">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h3>Create a New Trip</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="tripForm" (ngSubmit)="onTripSubmit()">
+            <!-- Customer Name -->
+            <div class="mb-3">
+              <label for="customerName" class="form-label">Customer Name</label>
+              <input type="text" id="customerName" class="form-control" formControlName="customerName">
+            </div>
+
+            <!-- Destination and Travel Class -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="destination" class="form-label">Destination</label>
+                <select id="destination" class="form-select" formControlName="destination">
+                  <option value="Paris">Paris</option>
+                  <option value="Tokyo">Tokyo</option>
+                  <option value="New York">New York</option>
+                  <option value="London">London</option>
+                  <option value="Sydney">Sydney</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="travelClass" class="form-label">Travel Class</label>
+                <select id="travelClass" class="form-select" formControlName="travelClass">
+                  <option value="Economy">Economy</option>
+                  <option value="Business">Business</option>
+                  <option value="First">First</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Date Pickers -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="departureDate" class="form-label">Departure Date</label>
+                <input type="date" id="departureDate" class="form-control" formControlName="departureDate">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="returnDate" class="form-label">Return Date</label>
+                <input type="date" id="returnDate" class="form-control" formControlName="returnDate">
+              </div>
+            </div>
+
+            <!-- Passengers -->
+            <div class="mb-3">
+              <label for="passengers" class="form-label">Number of Passengers</label>
+              <input type="number" id="passengers" class="form-control" formControlName="passengers">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100" [disabled]="tripForm.invalid">Book Trip</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column for the Selected Itinerary -->
+    <div class="col-lg-7">
+      <app-travel-itinerary [trip]="selectedTrip"></app-travel-itinerary>
+      <div *ngIf="!selectedTrip" class="alert alert-light text-center p-5">
+        <p class="lead">Select a trip to view its full itinerary.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-4">
+
+  <!-- Section for All Booking Cards -->
+  <h2 class="mb-3">All Trips</h2>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+    <div class="col" *ngFor="let trip of trips">
+      <app-booking-card [trip]="trip" [isSelected]="selectedTrip?.id === trip.id"
+        (viewItinerary)="onViewItinerary($event)" (addHotel)="onAddHotel($event)" (delete)="onDeleteTrip($event)">
+      </app-booking-card>
+    </div>
+  </div>
+
+   <hr class="my-4">
+
+  <!-- Section for Charts -->
+  <div class="row mb-4">
+    <h2 class="mb-3">Analytics</h2>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">Bookings by Destination</div>
+        <div class="card-body">
+          <ngx-charts-bar-vertical [results]="barChartData" [xAxis]="true" [yAxis]="true" [legend]="false"
+            [showXAxisLabel]="true" [showYAxisLabel]="true" xAxisLabel="Destination" yAxisLabel="Number of Bookings">
+          </ngx-charts-bar-vertical>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">Seasonal Booking Trends</div>
+        <div class="card-body">
+          <ngx-charts-line-chart [results]="lineChartData" [xAxis]="true" [yAxis]="true" [legend]="true"
+            [showXAxisLabel]="true" [showYAxisLabel]="true" xAxisLabel="Month" yAxisLabel="Number of Bookings"
+            [autoScale]="true">
+          </ngx-charts-line-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

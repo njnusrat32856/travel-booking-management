@@ -1,0 +1,36 @@
+<div class="card itinerary-card" *ngIf="trip">
+  <div class="card-header bg-primary text-white">
+    <h3>Itinerary for {{ trip.destination }}</h3>
+  </div>
+  <div class="card-body">
+    <h4>Trip Details</h4>
+    <p><strong>Customer:</strong> {{ trip.customerName }}</p>
+    <p><strong>Dates:</strong> {{ trip.departureDate }} to {{ trip.returnDate }}
+    </p>
+    <p><strong>Travelers:</strong> {{ trip.passengers }} in {{ trip.travelClass }} class</p>
+
+    <hr>
+
+    <h4>Hotel Bookings</h4>
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && hotelBookings.length === 0" class="alert alert-info">
+      No hotels booked for this trip yet.
+    </div>
+
+    <ul class="list-group list-group-flush" *ngIf="!isLoading && hotelBookings.length > 0">
+      <li class="list-group-item" *ngFor="let hotel of hotelBookings">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ hotel.hotelName }}</h5>
+          <small>Cost: {{ hotel.totalCost }}</small>
+        </div>
+        <p class="mb-1">Room: {{ hotel.roomType }}</p>
+        <small>Check-in: {{ hotel.checkIn }} | Check-out: {{ hotel.checkOut }}</small>
+      </li>
+    </ul>
+  </div>
+</div>
